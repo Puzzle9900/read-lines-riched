@@ -1,0 +1,38 @@
+{
+  "name": "read-lines-riched",
+  "version": "0.1.0",
+  "description": "Easy way to read lines of files. You can read lines from start to end of file or from end to start of file.",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha ./test/read_lines.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Puzzle9900/read-lines-riched.git"
+  },
+  "keywords": [
+    "read",
+    "lines",
+    "top",
+    "bottom",
+    "end",
+    "start",
+    "begin",
+    "last",
+    "file"
+  ],
+  "author": "Puzzle9900 (Gabriel A Fernandez)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Puzzle9900/read-lines-riched/issues"
+  },
+  "homepage": "https://github.com/Puzzle9900/read-lines-riched#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.0.0"
+  },
+  "dependencies": {
+    "fs-extra": "^5.0.0"
+  }
+}
