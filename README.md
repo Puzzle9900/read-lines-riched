@@ -24,12 +24,12 @@ const {readLinesStartToEnd, readLinesEndToStart} = require('read-lines-riched');
 To read lines from the begining of the file to the end.
 ```
 const startToEndRL = readLinesStartToEnd(file_path);
-await startToEndRL.readNextLine();
+const line = await startToEndRL.readNextLine();
 ```
 To read lines from the end of the file to the beginning.
 ```
 let endToStartRL = readLinesEndToStart(file_path);
-await endToStartRL.readNextLine();
+const line = await endToStartRL.readNextLine();
 ```
 
 ## License
