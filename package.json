@@ -1,7 +1,7 @@
 {
   "name": "read-lines-riched",
   "version": "0.1.2",
-  "description": "Easy way to read lines of files. You can read lines from start to end of file or from end to start of file.",
+  "description": "Easy way to read file lines on two directions: from the beginning to the end and from the end to the beginning.",
   "main": "main.js",
   "scripts": {
     "test": "mocha ./test/read_lines.spec.js"
