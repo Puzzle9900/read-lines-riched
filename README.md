@@ -1,6 +1,6 @@
 # Read Lines Riched
 
-Easy way to read files line by line on two directions: from the beginning to the last and from the last to beginning.
+Easy way to read file lines on two directions: from the beginning to the end and from the end to the beginning.
 
 ## Installing
 
@@ -14,22 +14,46 @@ npm install --save read-lines-riched
 npm test
 ```
 
-## Usage
+## Usage with Promise
 
-To use the module.
+Reading lines example from the end of the file to the beginning.
 ```
-const {readLinesStartToEnd, readLinesEndToStart} = require('read-lines-riched');
-```
+const {readLinesEndToStart} = require("read-lines-riched");
 
-To read lines from the begining of the file to the end.
+let endToStartRL = readLinesEndToStart("./testing_file");
+
+var func = function () {
+    endToStartRL.readNextLine().then(line => {
+        if (line) {
+            console.log(line);
+            func()
+        }
+        else
+            endToStartRL.closeReader();
+    });
+};
+
+func();
 ```
-const startToEndRL = readLinesStartToEnd(file_path);
-const line = await startToEndRL.readNextLine();
+## Usage with Async Await
+
+Reading lines example from the beginning of the file to the end.
+
 ```
-To read lines from the end of the file to the beginning.
-```
-let endToStartRL = readLinesEndToStart(file_path);
-const line = await endToStartRL.readNextLine();
+const { readLinesStartToEnd} = require("read-lines-riched");
+
+const startToEndRL = readLinesStartToEnd("./testing_file");
+
+(async function(){
+    var line = await startToEndRL.readNextLine();
+    while(line)
+    {
+        console.log(line);
+        line = await startToEndRL.readNextLine();
+    }
+
+    startToEndRL.closeReader();
+})();
 ```
 
 ## Contributing
