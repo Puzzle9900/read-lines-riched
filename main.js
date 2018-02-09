@@ -11,18 +11,32 @@ var eDir = Object.freeze({
 
 function readLines(file_path, options) {
     let dir = options.dir;
+    let bChunk = options.bChunk;
 
     async function readNextChar(fd, stat, readedCharCount) {
-        var originPos = dir === eDir.EndToStart ? stat.size - 1 : 0;
-
-        var offsetToRead = (originPos + dir * readedCharCount);
-
-        if (stat.size <= offsetToRead || offsetToRead < 0)
+        if(readedCharCount == stat.size)
             return '';
 
-        var { readBytes, buffer} = await fs.read(fd, Buffer.alloc(1), 0, 1, offsetToRead);
+        var originPos = dir === eDir.EndToStart ? stat.size : 0;
 
-        return String.fromCharCode(buffer[0]);
+        var readSize = bChunk;
+        var relativePosition = (originPos + dir * readedCharCount);
+
+        var readPosition = dir === eDir.EndToStart ? relativePosition - readSize : relativePosition;
+        if (readPosition < 0)//If end to start read the characters left
+        {
+            readPosition = 0;
+            readSize = relativePosition;
+        }
+        else if(readPosition + readSize > stat.size)//If start to end read the characters left
+        {
+            readPosition = relativePosition
+            readSize = stat.size - relativePosition;
+        }
+
+        var { readBytes, buffer} = await fs.read(fd, Buffer.alloc(readSize), 0, readSize, readPosition);
+
+        return buffer.toString('utf8');
     };
 
     let self = {
@@ -92,13 +106,17 @@ function readLines(file_path, options) {
     };
 }
 
-function readLinesStartToEnd(file_path, options = {}){
-    options.dir = eDir.StartToEnd;
+function readLinesStartToEnd(file_path, bChunk = 1, dir = eDir.StartToEnd){
+    var options = {};
+    options.bChunk = bChunk;
+    options.dir = dir;
     return readLines(file_path, options);
 }
 
-function readLinesEndToStart(file_path, options = {}){
-    options.dir = eDir.EndToStart;
+function readLinesEndToStart(file_path, bChunk = 1, dir = eDir.EndToStart){
+    var options = {};
+    options.bChunk = bChunk;
+    options.dir = dir;
     return readLines(file_path, options);
 }
 
