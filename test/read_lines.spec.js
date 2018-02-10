@@ -17,130 +17,130 @@ let letters_file_path = "./test/letters";
 let empty_file_path = "./test/empty";
 let lines_file_path = './test/lines';
 
-// describe("#ReadNextChar 1 byte", () => {
-//     let startToEndRL = readLinesStartToEnd(letters_file_path);
+describe("#ReadNextChar 1 byte", () => {
+    let startToEndRL = readLinesStartToEnd(letters_file_path);
 
-//     let endToStartRL = readLinesEndToStart(letters_file_path);
+    let endToStartRL = readLinesEndToStart(letters_file_path);
 
-//     let fd = fs.openSync(letters_file_path, 'r');
-//     let stat = fs.statSync(letters_file_path);
+    let fd = fs.openSync(letters_file_path, 'r');
+    let stat = fs.statSync(letters_file_path);
 
 
-//     it("StartToEnd. Reading first character should be 'h'", async () => {
-//         let char = await startToEndRL.readNextChar(fd, stat, 0);
+    it("StartToEnd. Reading first character should be 'h'", async () => {
+        let char = await startToEndRL.readNextChar(fd, stat, 0);
 
-//         expect(char).is.equals('h');
-//     });
+        expect(char).is.equals('h');
+    });
 
-//     it("StartToEnd. After read 4 characters the 5th character should be 'f'", async () => {
-//         let char = await startToEndRL.readNextChar(fd, stat, 4);
+    it("StartToEnd. After read 4 characters the 5th character should be 'f'", async () => {
+        let char = await startToEndRL.readNextChar(fd, stat, 4);
 
-//         expect(char).is.equals('f');
-//     });
+        expect(char).is.equals('f');
+    });
 
-//     it("EndToStart. Reading first chatacter should be 'u'", async () => {
-//         let char = await endToStartRL.readNextChar(fd, stat, 0);
+    it("EndToStart. Reading first chatacter should be 'u'", async () => {
+        let char = await endToStartRL.readNextChar(fd, stat, 0);
 
-//         expect(char).is.equals("u");
-//     });
+        expect(char).is.equals("u");
+    });
 
-//     it("EndToStart. After read 4 characters the 5th character should be 'j'", async () => {
-//         let char = await endToStartRL.readNextChar(fd, stat, 4);
+    it("EndToStart. After read 4 characters the 5th character should be 'j'", async () => {
+        let char = await endToStartRL.readNextChar(fd, stat, 4);
 
-//         expect(char).is.equals('j');
-//     });
+        expect(char).is.equals('j');
+    });
 
-//     it("EndToStart. After read 3 characters the next character should be new line character '\\n' or '\\r'", async () => {
-//         let char = await endToStartRL.readNextChar(fd, stat, 3);
+    it("EndToStart. After read 3 characters the next character should be new line character '\\n' or '\\r'", async () => {
+        let char = await endToStartRL.readNextChar(fd, stat, 3);
 
-//         assert(NEW_LINE_CHARACTERS.includes(char), "Character should be '\\n' or '\\r'");
-//     });
+        assert(NEW_LINE_CHARACTERS.includes(char), "Character should be '\\n' or '\\r'");
+    });
 
-//     it("Empty file should return empty string.", async () => {
-//         let fd = await fs.open(empty_file_path, 'r');
-//         let stat = await fs.stat(empty_file_path);
+    it("Empty file should return empty string.", async () => {
+        let fd = await fs.open(empty_file_path, 'r');
+        let stat = await fs.stat(empty_file_path);
 
-//         let rl = readLinesStartToEnd(empty_file_path);
+        let rl = readLinesStartToEnd(empty_file_path);
 
-//         let char = await rl.readNextChar(fd, stat, 0);
+        let char = await rl.readNextChar(fd, stat, 0);
 
-//         assert.isEmpty(char, "Read empty file should return empty string");
-//     });
-// });
+        assert.isEmpty(char, "Read empty file should return empty string");
+    });
+});
 
-// describe("#ReadNextChar n bytes", () => {
+describe("#ReadNextChar n bytes", () => {
     
-//     let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
-//     let fd = fs.openSync(letters_file_path, 'r');
-//     let stat = fs.statSync(letters_file_path);
+    let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
+    let fd = fs.openSync(letters_file_path, 'r');
+    let stat = fs.statSync(letters_file_path);
 
-//     it("StartToEnd. Reading first two character should be 'hg'", async () => {
-//         let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 2)
+    it("StartToEnd. Reading first two character should be 'hg'", async () => {
+        let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 2)
 
-//         let char = await startToEndRL.readNextChar(fd, stat, 0);
+        let char = await startToEndRL.readNextChar(fd, stat, 0);
 
-//         expect(char).is.equals('hg');
-//     });
+        expect(char).is.equals('hg');
+    });
 
-//     it("StartToEnd. Reading first 5 character should be 'hg\\r\\nf'", async () => {
-//         let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 5)
+    it("StartToEnd. Reading first 5 character should be 'hg\\r\\nf'", async () => {
+        let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 5)
 
-//         let char = await startToEndRL.readNextChar(fd, stat, 0);
+        let char = await startToEndRL.readNextChar(fd, stat, 0);
 
-//         expect(char).is.equals(`hg\r\nf`);
-//     });
+        expect(char).is.equals(`hg\r\nf`);
+    });
 
-//     it("StartToEnd. Reading more than te file should return full string legth = 18", async () => {
-//         let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 19)
+    it("StartToEnd. Reading more than te file should return full string legth = 18", async () => {
+        let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 19)
 
-//         let char = await startToEndRL.readNextChar(fd, stat, 0);
+        let char = await startToEndRL.readNextChar(fd, stat, 0);
 
-//         expect(char.length).is.equals(18);
-//     });
+        expect(char.length).is.equals(18);
+    });
 
-//     it("StartToEnd. Reading from postition 5, 20 should return lenght = 13", async () => {
-//         let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 20)
+    it("StartToEnd. Reading from postition 5, 20 should return lenght = 13", async () => {
+        let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 20)
 
-//         let char = await startToEndRL.readNextChar(fd, stat, 5);
+        let char = await startToEndRL.readNextChar(fd, stat, 5);
 
-//         expect(char.length).is.equals(13);
-//     });
+        expect(char.length).is.equals(13);
+    });
 
 
-//     it("EndToStart. Reading first two character should be 'yu'", async () => {
-//         let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
+    it("EndToStart. Reading first two character should be 'yu'", async () => {
+        let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
 
-//         let char = await endToStartRL.readNextChar(fd, stat, 0);
+        let char = await endToStartRL.readNextChar(fd, stat, 0);
 
-//         expect(char).is.equals("yu");
-//     });
+        expect(char).is.equals("yu");
+    });
 
-//     it("EndToStart. Reading first 6 character should be 'hj\\r\\nyu'", async () => {
-//         let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 6);
+    it("EndToStart. Reading first 6 character should be 'hj\\r\\nyu'", async () => {
+        let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 6);
 
-//         let char = await endToStartRL.readNextChar(fd, stat, 0);
+        let char = await endToStartRL.readNextChar(fd, stat, 0);
 
-//         expect(char).is.equals("hj\r\nyu");
-//     });
+        expect(char).is.equals("hj\r\nyu");
+    });
 
-//     it("EndToStart. Reading two times 2 should 'u' first then '\\r\\n'", async () => {
-//         let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
+    it("EndToStart. Reading two times 2 should 'u' first then '\\r\\n'", async () => {
+        let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
 
-//         let char = await endToStartRL.readNextChar(fd, stat, 0);
-//         expect(char).is.equals("yu");
+        let char = await endToStartRL.readNextChar(fd, stat, 0);
+        expect(char).is.equals("yu");
 
-//         char = await endToStartRL.readNextChar(fd, stat, 2);
-//         expect(char).is.equals("\r\n");
-//     });
+        char = await endToStartRL.readNextChar(fd, stat, 2);
+        expect(char).is.equals("\r\n");
+    });
 
-//     it("EndToStart. Reading from 7 more than left should return length = 11", async () => {
-//         let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 20);
+    it("EndToStart. Reading from 7 more than left should return length = 11", async () => {
+        let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 20);
 
-//         let char = await endToStartRL.readNextChar(fd, stat, 7);
-//         expect(char.length).is.equals(11);
-//     });
+        let char = await endToStartRL.readNextChar(fd, stat, 7);
+        expect(char.length).is.equals(11);
+    });
 
-// });
+});
 
 describe("#ReadNextLine", () => {
     it("StartToEnd. Read first line should be 'Line 1'", async () => {
