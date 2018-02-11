@@ -17,11 +17,13 @@ let letters_file_path = "./test/letters";
 let empty_file_path = "./test/empty";
 let lines_file_path = './test/lines';
 
-function platformValue(windows, macos, linux ){//If not windows platform carriage return takes only one character
-    if (process.platform === 'win32') {
+function platformValue(windows, macos, linux = macos ){//If not windows platform carriage return takes only one character
+    if (process.platform === 'win32')
         return windows;
-    }
-    return macos;
+    else if(process.platform === 'darwin')
+        return macos;
+    else
+        return linux
 }
 
 describe("#ReadNextChar n bytes", () => {
@@ -38,12 +40,12 @@ describe("#ReadNextChar n bytes", () => {
         expect(char).is.equals('hg');
     });
 
-    it(`StartToEnd. Reading first 5 character should be ${platformValue("'hg\\r\\nf'", "'hg\\nfd'")}`, async () => {
+    it(`StartToEnd. Reading first 5 character should be ${platformValue("'hg\\r\\nf'", "'hg\\nfd'", "'hg\\rfd'")}`, async () => {
         let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 5)
 
         let char = await startToEndRL.readNextChar(fd, stat, 0);
 
-        expect(char).is.equals(platformValue('hg\r\nf', 'hg\nfd'));
+        expect(char).is.equals(platformValue('hg\r\nf', 'hg\nfd', 'hg\nfd'));
     });
 
     it(`StartToEnd. Reading more than te file should return full string legth = ${platformValue(18, 14)}`, async () => {
@@ -71,22 +73,22 @@ describe("#ReadNextChar n bytes", () => {
         expect(char).is.equals("yu");
     });
 
-    it(`EndToStart. Reading first 6 character should be ${platformValue("'hj\\r\\nyu'", "'\\nhj\\nyu'")}`, async () => {
+    it(`EndToStart. Reading first 6 character should be ${platformValue("'hj\\r\\nyu'", "'\\nhj\\nyu'", "'\\rhj\\ryu'")}`, async () => {
         let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 6);
 
         let char = await endToStartRL.readNextChar(fd, stat, 0);
 
-        expect(char).is.equals(platformValue('hj\r\nyu', '\nhj\nyu'));
+        expect(char).is.equals(platformValue('hj\r\nyu', '\nhj\nyu', '\rhj\ryu'));
     });
 
-    it(`EndToStart. Reading two times 2 chunk should 'yu' first then ${platformValue("'\\r\\n'", "'j\\n'")}`, async () => {
+    it(`EndToStart. Reading two times 2 chunk should 'yu' first then ${platformValue("'\\r\\n'", "'j\\n'", "'j\\r'")}`, async () => {
         let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 2);
 
         let char = await endToStartRL.readNextChar(fd, stat, 0);
         expect(char).is.equals("yu");
 
         char = await endToStartRL.readNextChar(fd, stat, 2);
-        expect(char).is.equals(platformValue('\r\n', 'j\n'));
+        expect(char).is.equals(platformValue('\r\n', 'j\n',  'j\r'));
     });
 
     it(`EndToStart. Reading from 7 more than left should return length = ${platformValue(11, 7)}`, async () => {

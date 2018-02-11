@@ -17,11 +17,13 @@ let letters_file_path = "./test/letters";
 let empty_file_path = "./test/empty";
 let lines_file_path = './test/lines';
 
-function platformValue(windows, macos, linux ){//If not windows platform carriage return takes only one character
-    if (process.platform === 'win32') {
+function platformValue(windows, macos, linux = macos ){//If not windows platform carriage return takes only one character
+    if (process.platform === 'win32')
         return windows;
-    }
-    return macos;
+    else if(process.platform === 'darwin')
+        return macos;
+    else
+        return linux
 }
 
 describe("#ReadNextChar 1 byte", () => {
@@ -41,7 +43,7 @@ describe("#ReadNextChar 1 byte", () => {
     it(`StartToEnd. After read 4 characters the 5th character should be ${platformValue("'f'", "'d'")}`, async () => {
         let char = await startToEndRL.readNextChar(fd, stat, 4);
         
-        expect(char).is.equals(platformValue('f', 'd'));
+        expect(char).is.equals(platformValue('f', 'd', 'd'));
     });
 
     it("EndToStart. Reading first chatacter should be 'u'", async () => {
