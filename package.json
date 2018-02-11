@@ -4,7 +4,7 @@
   "description": "Easy way to read file lines on two directions: from the beginning to the end and from the end to the beginning.",
   "main": "main.js",
   "scripts": {
-    "test": "mocha ./test/read_lines.spec.js"
+    "test": "mocha ./test/main.spec.js"
   },
   "repository": {
     "type": "git",
