@@ -51,6 +51,7 @@ function readLines(file_path, options) {
      
 
     let readedCharCount = 0;
+    let lines_cache = [];
 
     async function readNextLine() {
         await initConfig;
@@ -63,6 +64,23 @@ function readLines(file_path, options) {
     }
 
     async function readLine()
+    {
+        let line = "";
+
+        var char = await readNextChar(self.fd, self.stat, readedCharCount);
+
+        while(char && !isNewLineOrUnknown(char)){
+            line += char;
+
+            readedCharCount += 1;
+            char = await readNextChar(self.fd, self.stat, readedCharCount);
+        }
+
+        return dir === eDir.StartToEnd ? line: line.split('').reverse().join('');
+    }
+
+    //This method change due ability to read file bytes by chunks
+    async function readLine_cache()
     {
         let line = "";
 
