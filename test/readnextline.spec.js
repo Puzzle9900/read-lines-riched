@@ -24,10 +24,11 @@ function platformValue(ifWindowsValue, ifNotWindowsValue ){//If not windows plat
     return ifNotWindowsValue;
 }
 
-describe("#ReadNextLine", () => {
+describe("#ReadNextLine 1 byte", () => {
     it("StartToEnd. Read first line should be 'Line 1'", async () => {
         let startToEndRL = readLinesStartToEnd(lines_file_path);
         expect(await startToEndRL.readNextLine()).is.equals('Line 1');
+        startToEndRL.closeReader();        
     });
 
     it("StartToEnd. Read first three lines should be 'Line 1', 'Line 2' and 'Line 3'", async () => {
@@ -35,6 +36,7 @@ describe("#ReadNextLine", () => {
         expect(await startToEndRL.readNextLine()).be.equals('Line 1');
         expect(await startToEndRL.readNextLine()).be.equals('Line 2');
         expect(await startToEndRL.readNextLine()).be.equals('Line 3');
+        startToEndRL.closeReader();        
     });
 
     it("StartToEnd. Read full file should have 6 no empty lines.", async () => {
@@ -46,6 +48,7 @@ describe("#ReadNextLine", () => {
         }
 
         expect(count).be.equals(6);
+        startToEndRL.closeReader();        
     });
 
     it("EndToStart. Read last line should be 'Line6'", async () => {
@@ -81,6 +84,30 @@ describe("#ReadNextLine", () => {
         }
 
         expect(count).be.equals(0);
+    });
+});
+
+describe('ReadNextLine chunk bytes', ()=>{
+    
+    it(`StartToEnd. Read 8 bytes should return Line 1`, async ()=>{
+        let startToEndRL = readLinesStartToEnd(lines_file_path, bCunk = 8);
+        expect(await startToEndRL.readNextLine()).be.equals('Line 1');
+    });
+
+    it(`StartToEnd. Read 8 bytes 3 times should read file 3 times`, async ()=>{
+        let startToEndRL = readLinesStartToEnd(lines_file_path, bCunk = 8);
+        expect(await startToEndRL.readNextLine()).be.equals('Line 1');
+        expect(await startToEndRL.readNextLine()).be.equals('Line 2');
+        expect(await startToEndRL.readNextLine()).be.equals('Line 3');
+    });
+
+    it(`StartToEnd. Read 40 bytes should should use cache 3 times with lines 2 - 3`, async ()=>{
+        let startToEndRL = readLinesStartToEnd(lines_file_path, bCunk = 40);
+        expect(await startToEndRL.readNextLine()).be.equals('Line 1');
+        expect(await startToEndRL.readNextLine()).be.equals('Line 2');
+        expect(await startToEndRL.readNextLine()).be.equals('Line 3');
+        expect(await startToEndRL.readNextLine()).be.equals('Line 4');
+        expect(await startToEndRL.readNextLine()).be.equals('Line 5');
     });
 });
 
