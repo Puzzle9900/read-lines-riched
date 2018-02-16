@@ -9,9 +9,12 @@ var eDir = Object.freeze({
     "EndToStart": -1
 });
 
+
 function readLines(file_path, options) {
     let dir = options.dir;
     let bChunk = options.bChunk;
+
+    const carriage = platformValue('\r\n', '\n','\r');
 
     async function readNextChar(fd, stat, readedCharCount) {
         if(readedCharCount == stat.size)
@@ -56,31 +59,43 @@ function readLines(file_path, options) {
     async function readNextLine() {
         await initConfig;
 
-        await cleanForNextRead();
-
-        let line = await readLine();
-
+        // await cleanForNextRead();
+        if(linesCache.length > 1)
+            return linesCache.pop();
+        var line = await readLinesCache();
         return line;
     }
 
-    async function readLine()
+    async function readLinesCache()
     {
-        let line = "";
+        let lines = '';
 
-        var char = await readNextChar(self.fd, self.stat, readedCharCount);
+        var charsChunk;
+        while((charsChunk = await readNextChar(self.fd, self.stat, readedCharCount)))
+        {
+            readedCharCount += charsChunk.length;
+            lines = dir === eDir.StartToEnd ? lines + charsChunk : charsChunk + lines;
 
-        while(char && !isNewLineOrUnknown(char)){
-            line += char;
-
-            readedCharCount += 1;
-            char = await readNextChar(self.fd, self.stat, readedCharCount);
+            if(charsChunk.includes(carriage) && /\w/i.test(lines))//Avoid empty lines with enters
+                break;
         }
 
-        return dir === eDir.StartToEnd ? line: line.split('').reverse().join('');
+        if(linesCache.length == 1 && linesCache[0])
+        {
+            var mayInconcluseLine = linesCache.pop();
+            lines = dir === eDir.StartToEnd ? mayInconcluseLine + lines : lines + mayInconcluseLine;
+        }
+
+        var linesArr = lines.split(carriage).filter(x => x);//removing empty strings
+        if(eDir.StartToEnd)
+            linesArr = linesArr.reverse();
+
+        linesCache = linesCache.concat(linesArr);
+        
+        return linesCache.length > 0 ? linesCache.pop(): '';
     }
 
-    //This method change due ability to read file bytes by chunks
-    async function readLine_cache()
+    async function readLine()
     {
         let line = "";
 
@@ -111,6 +126,15 @@ function readLines(file_path, options) {
     function isNewLineOrUnknown(char)
     {
         return NEW_LINE_CHARACTERS.includes(char) || char.length > 1;
+    }
+
+    function platformValue(windows, macos, linux = macos ){//If not windows platform carriage return takes only one character
+        if (process.platform === 'win32')
+            return windows;
+        else if(process.platform === 'darwin')
+            return macos;
+        else
+            return linux
     }
 
     async function closeReader(){
