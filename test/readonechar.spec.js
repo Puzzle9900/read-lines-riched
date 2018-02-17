@@ -27,9 +27,9 @@ function platformValue(windows, macos, linux = macos ){//If not windows platform
 }
 
 describe("#ReadNextChar 1 byte", () => {
-    let startToEndRL = readLinesStartToEnd(letters_file_path);
+    let startToEndRL = readLinesStartToEnd(letters_file_path, bChunk = 1);
 
-    let endToStartRL = readLinesEndToStart(letters_file_path);
+    let endToStartRL = readLinesEndToStart(letters_file_path, bChunk = 1);
 
     let fd = fs.openSync(letters_file_path, 'r');
     let stat = fs.statSync(letters_file_path);
@@ -68,7 +68,7 @@ describe("#ReadNextChar 1 byte", () => {
         let fd = await fs.open(empty_file_path, 'r');
         let stat = await fs.stat(empty_file_path);
 
-        let rl = readLinesStartToEnd(empty_file_path);
+        let rl = readLinesStartToEnd(empty_file_path, bChunk = 1);
 
         let char = await rl.readNextChar(fd, stat, 0);
 

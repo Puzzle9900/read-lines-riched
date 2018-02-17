@@ -64,15 +64,10 @@ function readLines(file_path, options) {
     async function readNextLine() {
         await initConfig;
 
-        // await cleanForNextRead();
         if (linesCache.length > 0)
             return linesCache.pop();
 
-        // if(dir === eDir.StartToEnd)
-        //     var line = await readLinesCacheStartToEnd();
-        // else
         var line = await readLinesCache();
-
         return line;
     }
 
@@ -110,21 +105,6 @@ function readLines(file_path, options) {
         return linesArr.concat(linesCache);
     }
 
-    async function cleanForNextRead() {
-        var char = await readNextChar(self.fd, self.stat, readedCharCount);
-
-        while (char && isNewLineOrUnknown(char)) //Cleaning \\n \\r or unknown characters
-        {
-            readedCharCount += char.length;
-
-            char = await readNextChar(self.fd, self.stat, readedCharCount);
-        }
-    }
-
-    function isNewLineOrUnknown(char) {
-        return NEW_LINE_CHARACTERS.includes(char) || char.length > 1;
-    }
-
     function platformValue(windows, macos, linux = macos) { //If not windows platform carriage return takes only one character
         if (process.platform === 'win32')
             return windows;
@@ -137,21 +117,6 @@ function readLines(file_path, options) {
     async function closeReader() {
         await fs.close(self.fd);
     }
-
-        // async function readLine() {
-    //     let line = "";
-
-    //     var char = await readNextChar(self.fd, self.stat, readedCharCount);
-
-    //     while (char && !isNewLineOrUnknown(char)) {
-    //         line += char;
-
-    //         readedCharCount += 1;
-    //         char = await readNextChar(self.fd, self.stat, readedCharCount);
-    //     }
-
-    //     return dir === eDir.StartToEnd ? line : line.split('').reverse().join('');
-    // }
 
     function getCache()
     {
@@ -174,14 +139,14 @@ function readLines(file_path, options) {
         };
 }
 
-function readLinesStartToEnd(file_path, bChunk = 1, dir = eDir.StartToEnd) {
+function readLinesStartToEnd(file_path, bChunk = 1024, dir = eDir.StartToEnd) {
     var options = {};
     options.bChunk = bChunk;
     options.dir = dir;
     return readLines(file_path, options);
 }
 
-function readLinesEndToStart(file_path, bChunk = 1, dir = eDir.EndToStart) {
+function readLinesEndToStart(file_path, bChunk = 1024, dir = eDir.EndToStart) {
     var options = {};
     options.bChunk = bChunk;
     options.dir = dir;

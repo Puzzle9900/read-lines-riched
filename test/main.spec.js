@@ -8,3 +8,5 @@ describe('ReadNextChar tests', ()=>{
 
 require('./readnextline.spec.js');
 
+require('./readbigfile.spec.js');
+
