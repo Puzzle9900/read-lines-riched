@@ -1,4 +1,4 @@
-# New Document# What is this?
+# What is this?
 
 Easy way to read file lines async and efficiently on two directions: from the beginning to the end and from the end to the beginning.
 
