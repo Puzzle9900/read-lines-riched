@@ -72,7 +72,7 @@ const readLinesRiched = require("read-lines-riched").readLines(file_path, {
 ```
 
 # Changelog
-All notable changes to this project can be seen [here](https://github.com/Puzzle9900/read-lines-riched/blob/master/README.md).
+All notable changes to this project can be seen [here](https://github.com/Puzzle9900/read-lines-riched/blob/master/CHANGELOG.md).
 
 # Contributing
 
