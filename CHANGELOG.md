@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 0.2.0
+## 0.2.1
 ##### 2018-02-17
 
 ### Added

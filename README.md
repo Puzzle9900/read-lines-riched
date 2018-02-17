@@ -1,4 +1,4 @@
-# What is this?
+# New Document# What is this?
 
 Easy way to read file lines async and efficiently on two directions: from the beginning to the end and from the end to the beginning.
 
@@ -15,16 +15,16 @@ npm test
 ```
 
 # Highlights of functionality
-*`readLines(file_path[,options])` return  - Return instance of `readLineRiched` configured with options to read file lines.
-    *`options` Object (Optional)
-        *`bChunk` Integer - Size in bytes of how many bytes are readed from file at the same time. Default is 1024.
-        *`dir` Integer - 1 read lines from beginning to the end. -1 read lines from the end to the beginning. Default is 1.
+* `readLines(file_path[,options])` - Return instance of `readLineRiched` configured with options to read file lines.
+    * `options` Object (Optional)
+        * `bChunk` Integer - Size in bytes of how many bytes are readed from file at the same time. Default is 1024.
+        * `dir` Integer - 1 read lines from beginning to the end. -1 read lines from the end to the beginning. Default is 1.
 
-*`readLinesStartToEnd(file_path)` - Return instance of `readLineRiched` that read from the beginning of the file to the end reading chunks of 1kb.
+* `readLinesStartToEnd(file_path)` - Return instance of `readLineRiched` that read from the beginning of the file to the end reading chunks of 1kb.
 
-*`readLinesEndToStart(file_path)` - Return instance of `readLineRiched` that read from the end of the file to the beginning  reading chunks of 1kb.
+* `readLinesEndToStart(file_path)` - Return instance of `readLineRiched` that read from the end of the file to the beginning  reading chunks of 1kb.
 
-*`readLineRiched.readNextLine()` - Read next line of file based on given configuration.
+* `readLineRiched.readNextLine()` - Read next line of file based on given configuration.
 
 # Usage
 
