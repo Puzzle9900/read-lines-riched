@@ -1,6 +1,9 @@
 {
   "name": "read-lines-riched",
   "version": "0.2.2",
+=======
+  "version": "0.2.1",
+>>>>>>> 446be37d435e85a986965a301331543afc8c4ed6
   "description": "Easy way to read file lines on two directions: from the beginning to the end and from the end to the beginning.",
   "main": "main.js",
   "scripts": {
