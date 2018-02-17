@@ -18,7 +18,7 @@ let big_file_path = "./test/bigfile";
 
 describe('ReadingBigFile', () => {
 
-    it(`StartToEnd. Read file should return all lines total 3000`, async () => {
+    it(`StartToEnd. Read file chunk 100 should return all lines total 3000`, async () => {
         var readStartToEnd = readLinesStartToEnd(big_file_path, bChunk = 100);
         var count = 0;
         while (await readStartToEnd.readNextLine()) count += 1;
@@ -26,7 +26,7 @@ describe('ReadingBigFile', () => {
         expect(count).to.be.equals(3000);
     });
 
-    it(`EndToStart. Read file should return all lines total 3000`, async () => {
+    it(`EndToStart. Read file chunk 100 should return all lines total 3000`, async () => {
         var readEndToStart = readLinesEndToStart(big_file_path, bChunk = 100);
         var count = 0;
         while (await readEndToStart.readNextLine()) count += 1;

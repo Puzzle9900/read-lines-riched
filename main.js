@@ -7,12 +7,12 @@ var TESTABLE = false;
 const NEW_LINE_CHARACTERS = ["\n", "\r"];
 
 var eDir = Object.freeze({
-    "StartToEnd": 1,
-    "EndToStart": -1
+    StartToEnd: 1,
+    EndToStart: -1
 });
 
 
-function readLines(file_path, options) {
+function readLines(file_path, options = {bChunk :1024, dir:eDir.StartToEnd}) {
     let dir = options.dir;
     let bChunk = options.bChunk;
 
@@ -139,17 +139,17 @@ function readLines(file_path, options) {
         };
 }
 
-function readLinesStartToEnd(file_path, bChunk = 1024, dir = eDir.StartToEnd) {
+function readLinesStartToEnd(file_path, bChunk = 1024) {
     var options = {};
     options.bChunk = bChunk;
-    options.dir = dir;
+    options.dir = eDir.StartToEnd;
     return readLines(file_path, options);
 }
 
-function readLinesEndToStart(file_path, bChunk = 1024, dir = eDir.EndToStart) {
+function readLinesEndToStart(file_path, bChunk = 1024) {
     var options = {};
     options.bChunk = bChunk;
-    options.dir = dir;
+    options.dir = eDir.EndToStart;
     return readLines(file_path, options);
 }
 
@@ -160,5 +160,6 @@ function makeTestable(){
 module.exports = {
     readLinesStartToEnd: readLinesStartToEnd,
     readLinesEndToStart: readLinesEndToStart,
+    readLines : readLines,
     makeTestable: makeTestable
 };

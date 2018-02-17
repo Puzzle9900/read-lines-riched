@@ -4,7 +4,8 @@ const fs = require("fs-extra");
 const {
     readLinesStartToEnd,
     readLinesEndToStart, 
-    makeTestable
+    makeTestable,
+    readLines
 } = require("../main.js");
 
 makeTestable();
@@ -199,8 +200,26 @@ describe('ReadNextLine chunk bytes', () => {
         expect(await endToStartRL.readNextLine()).be.equals('Line 3');
     });
 
-    it(`EndToStart. Read chunks 7 bytes full file should return 6 lines`, async ()=>{
+    it(`EndToStart. Read chunks 40 bytes full file should return 6 lines`, async ()=>{
         let endToStartRL = readLinesEndToStart(lines_file_path, bChunk = 40);
+        let count = 0;
+        while(await endToStartRL.readNextLine()){
+            count += 1;
+        }
+        expect(count).to.be.equals(6);
+    });
+
+    it(`ReadLineFunction EndToStart. Read chunks 40 full file`, async ()=>{
+        let endToStartRL = readLines(lines_file_path, { bChunk : 40, dir : -1});
+        let count = 0;
+        while(await endToStartRL.readNextLine()){
+            count += 1;
+        }
+        expect(count).to.be.equals(6);
+    });
+
+    it(`ReadLineFunction StartToEnd. Read chunks 40 full file`, async ()=>{
+        let endToStartRL = readLines(lines_file_path, { bChunk : 40, dir : 1});
         let count = 0;
         while(await endToStartRL.readNextLine()){
             count += 1;

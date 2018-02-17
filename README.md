@@ -1,62 +1,80 @@
-# Read Lines Riched
+# What is this?
 
-Easy way to read file lines on two directions: from the beginning to the end and from the end to the beginning.
+Easy way to read file lines async and efficiently on two directions: from the beginning to the end and from the end to the beginning.
 
-## Installing
+# Installing
 
 ```
 npm install --save read-lines-riched
 ```
 
-## Running the tests
+# Run tests
 
 ```
 npm test
 ```
 
-## Usage with Promise
+# Highlights of functionality
+*`readLines(file_path[,options])` return  - Return instance of `readLineRiched` configured with options to read file lines.
+    *`options` Object (Optional)
+        *`bChunk` Integer - Size in bytes of how many bytes are readed from file at the same time. Default is 1024.
+        *`dir` Integer - 1 read lines from beginning to the end. -1 read lines from the end to the beginning. Default is 1.
 
-Reading lines example from the end of the file to the beginning.
+*`readLinesStartToEnd(file_path)` - Return instance of `readLineRiched` that read from the beginning of the file to the end reading chunks of 1kb.
+
+*`readLinesEndToStart(file_path)` - Return instance of `readLineRiched` that read from the end of the file to the beginning  reading chunks of 1kb.
+
+*`readLineRiched.readNextLine()` - Read next line of file based on given configuration.
+
+# Usage
+
+## Reading from beginning to end using Promise
 ```
-const {readLinesEndToStart} = require("read-lines-riched");
-
-let endToStartRL = readLinesEndToStart("./testing_file");
+const readLinesEndToStart = require("read-lines-riched").readLinesEndToStart(file_path);
 
 var func = function () {
-    endToStartRL.readNextLine().then(line => {
+    readLinesEndToStart.readNextLine().then(line => {
         if (line) {
             console.log(line);
             func()
-        }
-        else
-            endToStartRL.closeReader();
+        } else
+            readLinesEndToStart.closeReader();
     });
 };
-
 func();
 ```
-## Usage with Async Await
-
-Reading lines example from the beginning of the file to the end.
-
+## Reading from end to beginning using Async
 ```
-const { readLinesStartToEnd} = require("read-lines-riched");
+const readLinesStartToEnd = require("read-lines-riched").readLinesStartToEnd(file_path);
 
-const startToEndRL = readLinesStartToEnd("./testing_file");
-
-(async function(){
-    var line = await startToEndRL.readNextLine();
-    while(line)
-    {
+(async function () {
+    var line;
+    while (line = await readLinesStartToEnd.readNextLine()) {
         console.log(line);
-        line = await startToEndRL.readNextLine();
     }
+    readLinesStartToEnd.closeReader();
+})();
+```
+## Reading from end to beginning on chunks of 4kb.
+```
+const readLinesRiched = require("read-lines-riched").readLines(file_path, {
+        bChunk: 1024 * 4,
+        dir: -1
+    });
 
-    startToEndRL.closeReader();
+(async function () {
+    var line;
+    while (line = await readLinesRiched.readNextLine()) {
+        console.log(line);
+    }
+    readLinesRiched.closeReader();
 })();
 ```
 
-## Contributing
+# Changelog
+All notable changes to this project can be seen [here](https://github.com/Puzzle9900/read-lines-riched/blob/master/README.md).
+
+# Contributing
 
 1. Fork it on Github [https://github.com/Puzzle9900/read-lines-riched](https://github.com/Puzzle9900/read-lines-riched)
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -65,7 +83,7 @@ const startToEndRL = readLinesStartToEnd("./testing_file");
 5. Submit a pull request :D
 
 
-## License
+# License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
