@@ -23,7 +23,11 @@
     "async",
     "promise",
     "efficiently",
-    "reading"
+    "reading",
+    "up",
+    "down",
+    "reverse",
+    "direction"
   ],
   "author": "Puzzle9900 (Gabriel A Fernandez)",
   "license": "MIT",
