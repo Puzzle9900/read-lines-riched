@@ -17,7 +17,6 @@ function readLines(file_path, options = {bChunk :1024, dir:eDir.StartToEnd}) {
     let bChunk = options.bChunk;
 
     const carriage = platformValue('\r\n', '\n', '\r');
-    const carriageReg = platformValue(/\r\n/, /\n/, /\r/);
 
     async function readNextChar(fd, stat, readedCharCount, bytesChunk = bChunk) {
         if (readedCharCount == stat.size)
